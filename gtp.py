@@ -19,8 +19,8 @@ class Nowa:
 		return child	
 	def safe_points_to_file(self, string):
 		fo = open(string, "a")
-		print("Saving following time points: \""+starting_kernel_time+" "+starting_linux_time+" "+starting_rfs_time+" "+starting_prompt_time+"\" do pliku: \'"+fo.name+"\'")
-		fo.write(starting_kernel_time+" "+starting_linux_time+" "+starting_rfs_time+" "+starting_prompt_time+"\r\n")
+		print("Saving following time points: \""+self.starting_kernel_time+" "+self.starting_linux_time+" "+self.starting_rfs_time+" "+self.starting_prompt_time+"\" to file: \'"+fo.name+"\'")
+		fo.write(self.starting_kernel_time+" "+self.starting_linux_time+" "+self.starting_rfs_time+" "+self.starting_prompt_time+"\r\n")
 		fo.close()
 	def catch_line_with_string(self, string, child):
 		child.expect(str(two_time_brackets) + " " + string)
@@ -38,10 +38,14 @@ class Nowa:
 			print("There is still "+str(retries)+" tries left...")
 			print("Reset the target to start measurements...")
 			child = self.catch_line_with_string("Starting kernel", child) 
-			child = self.catch_line_with_string("Starting logging", child))
-			child = self.catch_line_with_string("Welcome to", child))
-			child = self.catch_line_with_string("buildroot login", child))
-			safe_points_to_file(str("nowy_plik"))
+			self.starting_kernel_time = self.var
+			child = self.catch_line_with_string("Starting logging", child)
+			self.starting_linux_time = self.var
+			child = self.catch_line_with_string("Welcome to", child)
+			self.starting_rfs_time = self.var
+			child = self.catch_line_with_string("buildroot login", child)
+			self.starting_prompt_time = self.var
+			self.safe_points_to_file("nowy_plik")
 			retries = retries - 1
 	
 
